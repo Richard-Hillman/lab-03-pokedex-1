@@ -1,1 +1,1 @@
-![](./public/Component Hierarchy.png)
+![Component Hierarchy](Component Hierarchy.png)
