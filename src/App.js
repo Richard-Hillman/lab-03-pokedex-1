@@ -8,9 +8,9 @@ import Sort from './Sort.js';
 export default class App extends React.Component {
   state = {
     filter: '',
+    form: '',
     sortType: '',
     sortOrder: '',
-    form: ''
   }
 
   handleSubmit = e => {
@@ -24,14 +24,14 @@ export default class App extends React.Component {
       filter: e.target.value
     });
   }
-  handleSortType = e => {
-    this.setState({
-      sortType: e.target.value
-    });
-  }
   handleSortOrder = e => {
     this.setState({
       sortOrder: e.target.value
+    });
+  }
+  handleSortType = e => {
+    this.setState({
+      sortType: e.target.value
     });
   }
 
