@@ -8,6 +8,7 @@ import {
 import HomePage from './HomePage.js'
 import MainContainer from './MainContainer.js';
 import Header from './Header.js';
+import FetchPage from './ListPage.js';
 
 export default class App extends Component {
     render() {
@@ -25,6 +26,11 @@ export default class App extends Component {
                             path="/list" 
                             exact
                             render={(routerProps) => <MainContainer {...routerProps} />} 
+                        />
+                        <Route 
+                            path="/fetch" 
+                            exact
+                            render={(routerProps) => <FetchPage {...routerProps} />} 
                         />
                     </Switch>
                 </Router>
