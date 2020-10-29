@@ -1,60 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react'
 import './App.css';
-import PokeList from './PokeList.js';
-import pokeData from './data.js';
-import Searchbar from './Searchbar.js';
-import Sort from './Sort.js';
+import {
+    BrowserRouter as Router, 
+    Route, 
+    Switch,
+} from 'react-router-dom';
+import HomePage from './HomePage.js'
+import MainContainer from './MainContainer.js';
+import Header from './Header.js';
 
-export default class App extends React.Component {
-  state = {
-    filter: '',
-    form: '',
-    sortType: '',
-    sortOrder: '',
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.setState({
-      form: this.state.form
-    });
-  }
-  handleChange = e => {
-    this.setState({
-      filter: e.target.value
-    });
-  }
-  handleSortOrder = e => {
-    this.setState({
-      sortOrder: e.target.value
-    });
-  }
-  handleSortType = e => {
-    this.setState({
-      sortType: e.target.value
-    });
-  }
-
-render() {
-  return (
-    <div className="App">
-      <Searchbar 
-        handleSubmit={this.handleSubmit}
-        handleChange={this.handleChange}
-        handleChangeAttack={this.handleChangeAttack}
-        handleChangeDefense={this.handleChangeDefense}
-      />
-      <Sort 
-        handleSortType={this.handleSortType}
-        handleSortOrder={this.handleSortOrder} />
-      <PokeList 
-        pokeDataProp={pokeData}
-        filter={this.state.filter}
-        sortType={this.state.sortType}
-        sortOrder={this.state.sortOrder}
-      />
-    </div>
-  );
+export default class App extends Component {
+    render() {
+        return (
+            <div>
+                <Router>
+                    <Header />
+                    <Switch>
+                        <Route 
+                            path="/" 
+                            exact
+                            render={(routerProps) => <HomePage {...routerProps} />} 
+                        />
+                        <Route 
+                            path="/list" 
+                            exact
+                            render={(routerProps) => <MainContainer {...routerProps} />} 
+                        />
+                    </Switch>
+                </Router>
+            </div>
+        )
+    }
 }
-}
-
