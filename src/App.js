@@ -3,19 +3,20 @@ import './App.css';
 import PokeList from './PokeList.js';
 import pokeData from './data.js';
 import Searchbar from './Searchbar.js';
+import Sort from './Sort.js';
 
 export default class App extends React.Component {
   state = {
     filter: '',
-    attack: '',
-    defense: '',
+    sortType: '',
+    sortOrder: '',
     form: ''
   }
 
   handleSubmit = e => {
     e.preventDefault();
     this.setState({
-      form: e.target.value
+      form: this.state.form
     });
   }
   handleChange = e => {
@@ -23,14 +24,14 @@ export default class App extends React.Component {
       filter: e.target.value
     });
   }
-  handleChangeAttack = e => {
+  handleSortType = e => {
     this.setState({
-      filter: e.target.value
+      sortType: e.target.value
     });
   }
-  handleChangeDefense = e => {
+  handleSortOrder = e => {
     this.setState({
-      filter: e.target.value
+      sortOrder: e.target.value
     });
   }
 
@@ -43,11 +44,14 @@ render() {
         handleChangeAttack={this.handleChangeAttack}
         handleChangeDefense={this.handleChangeDefense}
       />
+      <Sort 
+        handleSortType={this.handleSortType}
+        handleSortOrder={this.handleSortOrder} />
       <PokeList 
         pokeDataProp={pokeData}
         filter={this.state.filter}
-        attack={this.state.attack}
-        defense={this.state.defense}
+        sortType={this.state.sortType}
+        sortOrder={this.state.sortOrder}
       />
     </div>
   );
