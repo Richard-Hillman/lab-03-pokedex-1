@@ -5,16 +5,19 @@ import Searchbar from './Searchbar.js';
 import Sort from './Sort.js';
 
 export default class ListPage extends Component {
+    
     state = {
         pokemonData: [],
         filter: '',
-        form: '',
         sortType: '',
         sortOrder: '',
+        input: ''
     }
     
+
     fetchPokemon = async () => {
-        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.filter}&perPage=200`);
+        console.log(this.state.filter);
+        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}&perPage=200`);
         this.setState({ pokemonData: response.body.results });
     }
     
@@ -22,23 +25,29 @@ export default class ListPage extends Component {
         this.fetchPokemon();
     }
 
-    handleSubmit = async ()  => {
+    handleSubmit = async (e)  => {
+        e.preventDefault();
         this.fetchPokemon();
     }
+
     handleChange = (e) => {
         this.setState({
           filter: e.target.value
         });
     }
-    handleSortOrder = (e) => {
-        this.setState({
+
+    handleSortOrder = async (e) => {
+        await this.setState({
           sortOrder: e.target.value
         });
+        await this.fetchPokemon();
     }
-    handleSortType = (e) => {
-        this.setState({
+
+    handleSortType = async (e) => {
+        await this.setState({
           sortType: e.target.value
         });
+        await this.fetchPokemon();
     }
 
     render() {
@@ -47,11 +56,28 @@ export default class ListPage extends Component {
                 <Searchbar 
                     handleSubmit={this.handleSubmit}
                     handleChange={this.handleChange}
+                    input={this.state.input}
                 />
                 <Sort 
                     handleSortType={this.handleSortType}
                     handleSortOrder={this.handleSortOrder} 
                 />
+                
+                {
+                    this.state.pokemonData.length === 0
+                    ? <iframe 
+                    src="https://giphy.com/embed/Vk7VKS50xcSC4" 
+                    title={Math.random()}
+                    width="480" 
+                    height="321" 
+                    frameBorder="0" 
+                    className="giphy-embed" 
+                    allowFullScreen/>
+                    : <PokeList
+                    pokemonDataProp={this.state.pokemonData} 
+                    />
+                }
+                    
             </div>
         )
     }
