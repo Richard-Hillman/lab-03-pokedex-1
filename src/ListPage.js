@@ -1,55 +1,57 @@
 import React, { Component } from 'react';
 import fetch from 'superagent';
-import PokeItem from './PokeItem.js';
+import PokeList from './PokeList.js';
+import Searchbar from './Searchbar.js';
+import Sort from './Sort.js';
 
 export default class ListPage extends Component {
     state = {
         pokemonData: [],
-        type: ''
-
+        filter: '',
+        form: '',
+        sortType: '',
+        sortOrder: '',
     }
-
-    componentDidMount = async () => {
-        const response = await fetch.get('https://alchemy-pokedex.herokuapp.com/api/pokedex');
+    
+    fetchPokemon = async () => {
+        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.filter}&perPage=200`);
         this.setState({ pokemonData: response.body.results });
     }
     
-    handleClick = async (e) => {
-        e.preventDefault();
-        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex/types/${this.state.type}`)
-        this.setState({ pokemonData: response.body });
+    componentDidMount = async () => {
+        this.fetchPokemon();
     }
 
+    handleSubmit = async ()  => {
+        this.fetchPokemon();
+    }
     handleChange = (e) => {
-        this.setState({ type: e.target.value });
+        this.setState({
+          filter: e.target.value
+        });
+    }
+    handleSortOrder = (e) => {
+        this.setState({
+          sortOrder: e.target.value
+        });
+    }
+    handleSortType = (e) => {
+        this.setState({
+          sortType: e.target.value
+        });
     }
 
     render() {
         return (
             <div className="fetch">
-                <form onSubmit={this.handleClick}>
-                    <input onChange={this.handleChange} />
-                    <button>Search by Type</button>
-                </form>
-                {
-                    this.state.pokemonData.length === 0
-                    ? <iframe 
-                    src="https://giphy.com/embed/Vk7VKS50xcSC4" 
-                    title={Math.random()}
-                    width="480" 
-                    height="321" 
-                    frameBorder="0" 
-                    className="giphy-embed" 
-                    allowFullScreen/>
-                    : this.props.pokeDataProp.map((poke) =>
-                        <PokeItem
-                        image={poke.url_image}
-                        name={poke.pokemon}
-                        type={poke.type_1}
-                        attack={poke.attack}
-                        defense={poke.defense}
-                        />)
-                }
+                <Searchbar 
+                    handleSubmit={this.handleSubmit}
+                    handleChange={this.handleChange}
+                />
+                <Sort 
+                    handleSortType={this.handleSortType}
+                    handleSortOrder={this.handleSortOrder} 
+                />
             </div>
         )
     }

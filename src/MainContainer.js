@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import PokeList from './PokeList.js';
-import pokeData from './data.js';
 import Searchbar from './Searchbar.js';
 import Sort from './Sort.js';
 
 export default class MainContainer extends React.Component {
   state = {
+    pokemonData: [],
     filter: '',
     form: '',
     sortType: '',
@@ -44,13 +43,13 @@ render() {
       />
       <Sort 
         handleSortType={this.handleSortType}
-        handleSortOrder={this.handleSortOrder} />
-      <PokeList 
-        pokeDataProp={pokeData}
-        filter={this.state.filter}
-        sortType={this.state.sortType}
-        sortOrder={this.state.sortOrder}
+        handleSortOrder={this.handleSortOrder} 
       />
+      <form onSubmit={this.handleClick}>
+          <input onChange={this.handleChange} />
+          <button>Search by Type</button>
+      </form>
+      
     </div>
   );
 }
