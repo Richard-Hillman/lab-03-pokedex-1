@@ -1,36 +1,68 @@
 import React, { Component } from 'react';
 import fetch from 'superagent';
-import PokeItem from './PokeItem.js';
+import PokeList from './PokeList.js';
+import Searchbar from './Searchbar.js';
+import Sort from './Sort.js';
 
 export default class ListPage extends Component {
+    
     state = {
         pokemonData: [],
-        type: ''
-
+        filter: '',
+        sortType: '',
+        sortOrder: '',
+        input: ''
     }
+    
 
-    componentDidMount = async () => {
-        const response = await fetch.get('https://alchemy-pokedex.herokuapp.com/api/pokedex');
+    fetchPokemon = async () => {
+        console.log(this.state.filter);
+        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}&perPage=200`);
         this.setState({ pokemonData: response.body.results });
     }
     
-    handleClick = async (e) => {
+    componentDidMount = async () => {
+        this.fetchPokemon();
+    }
+
+    handleSubmit = async (e)  => {
         e.preventDefault();
-        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex/types/${this.state.type}`)
-        this.setState({ pokemonData: response.body });
+        this.fetchPokemon();
     }
 
     handleChange = (e) => {
-        this.setState({ type: e.target.value });
+        this.setState({
+          filter: e.target.value
+        });
+    }
+
+    handleSortOrder = async (e) => {
+        await this.setState({
+          sortOrder: e.target.value
+        });
+        await this.fetchPokemon();
+    }
+
+    handleSortType = async (e) => {
+        await this.setState({
+          sortType: e.target.value
+        });
+        await this.fetchPokemon();
     }
 
     render() {
         return (
             <div className="fetch">
-                <form onSubmit={this.handleClick}>
-                    <input onChange={this.handleChange} />
-                    <button>Search by Type</button>
-                </form>
+                <Searchbar 
+                    handleSubmit={this.handleSubmit}
+                    handleChange={this.handleChange}
+                    input={this.state.input}
+                />
+                <Sort 
+                    handleSortType={this.handleSortType}
+                    handleSortOrder={this.handleSortOrder} 
+                />
+                
                 {
                     this.state.pokemonData.length === 0
                     ? <iframe 
@@ -41,15 +73,11 @@ export default class ListPage extends Component {
                     frameBorder="0" 
                     className="giphy-embed" 
                     allowFullScreen/>
-                    : this.props.pokeDataProp.map((poke) =>
-                        <PokeItem
-                        image={poke.url_image}
-                        name={poke.pokemon}
-                        type={poke.type_1}
-                        attack={poke.attack}
-                        defense={poke.defense}
-                        />)
+                    : <PokeList
+                    pokemonDataProp={this.state.pokemonData} 
+                    />
                 }
+                    
             </div>
         )
     }
