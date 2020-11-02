@@ -4,6 +4,7 @@ import PokeList from './PokeList.js';
 import Searchbar from './Searchbar.js';
 import Sort from './Sort.js';
 
+
 export default class ListPage extends Component {
     
     state = {
