@@ -14,5 +14,5 @@ export default class PokeItem extends React.Component {
                 </Link>
             </div>
         )
-    }
+        }
 }
