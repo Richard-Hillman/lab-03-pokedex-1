@@ -86,16 +86,16 @@ export default class ListPage extends Component {
                 />
                 
                 <div>Page: {this.state.pageNumber}</div>
-
-                {
-                    this.state.pageNumber !== 1 &&
-                    <button onClick={this.handleDecrement}>Previous</button> 
-                }
-                {
-                    this.state.pageNumber !== Math.ceil(this.state.count / 20) &&
-                    <button onClick={this.handleIncrement}>Next</button> 
-                }
-
+                <div className="page-buttons">
+                    {
+                        this.state.pageNumber !== 1 &&
+                        <button onClick={this.handleDecrement}>Previous</button> 
+                    }
+                    {
+                        this.state.pageNumber !== Math.ceil(this.state.count / 20) &&
+                        <button onClick={this.handleIncrement}>Next</button> 
+                    }
+                </div>
                 {
                     this.state.pokemonData.length === 0
                     ? <iframe 
