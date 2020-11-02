@@ -5,7 +5,7 @@ export default class Searchbar extends Component {
         return (
             <div className="searchbar">
                 <form onSubmit={this.props.handleSubmit}>
-                        PokeSearch:
+                        PokeSearch: 
                         <input className="search-input" type="text" onChange={this.props.handleChange} />
                         <button className="search-button">Search!</button>
                 </form>
