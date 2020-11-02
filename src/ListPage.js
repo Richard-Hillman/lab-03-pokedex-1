@@ -20,7 +20,7 @@ export default class ListPage extends Component {
 
     fetchPokemon = async () => {
         console.log(this.state.filter);
-        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?page=${this.state.pageNumber}&perPage=20&pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}&perPage=200`);
+        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?page=${this.state.pageNumber}&perPage=20&pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}`);
         this.setState({ pokemonData: response.body.results });
 
         this.setState({
