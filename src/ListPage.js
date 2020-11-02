@@ -67,7 +67,7 @@ export default class ListPage extends Component {
 
     handleDecrement = async () => {
         await this.setState({
-            pageNumber: this.state.pageNumber + 1
+            pageNumber: this.state.pageNumber - 1
         })
         await this.fetchPokemon()
     }
@@ -85,8 +85,7 @@ export default class ListPage extends Component {
                     handleSortOrder={this.handleSortOrder} 
                 />
                 
-                <div>{this.state.pageNumber}</div>
-                <div>{this.state.count}</div>
+                <div>Page: {this.state.pageNumber}</div>
 
                 {
                     this.state.pageNumber !== 1 &&
