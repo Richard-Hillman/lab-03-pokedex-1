@@ -3,6 +3,10 @@ import PokeItem from './PokeItem.js';
 
 
 export default class PokeList extends Component {
+    state = {
+        pokemonData: []
+    }
+    
     render() {
         return (
             <>

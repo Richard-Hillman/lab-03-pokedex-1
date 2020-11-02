@@ -4,6 +4,7 @@ import PokeList from './PokeList.js';
 import Searchbar from './Searchbar.js';
 import Sort from './Sort.js';
 
+
 export default class ListPage extends Component {
     
     state = {
@@ -11,14 +12,21 @@ export default class ListPage extends Component {
         filter: '',
         sortType: '',
         sortOrder: '',
-        input: ''
+        input: '',
+        pageNumber: 1,
+        count: 1
     }
     
 
     fetchPokemon = async () => {
         console.log(this.state.filter);
-        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}&perPage=200`);
+        const response = await fetch.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?page=${this.state.pageNumber}&perPage=20&pokemon=${this.state.filter}&direction=${this.state.sortOrder}&sort=${this.state.sortType}`);
         this.setState({ pokemonData: response.body.results });
+
+        this.setState({
+            pokemonData: response.body.results,
+            count: response.body.count
+        })
     }
     
     componentDidMount = async () => {
@@ -50,6 +58,20 @@ export default class ListPage extends Component {
         await this.fetchPokemon();
     }
 
+    handleIncrement = async () => {
+        await this.setState({
+            pageNumber: this.state.pageNumber + 1
+        })
+        await this.fetchPokemon()
+    }
+
+    handleDecrement = async () => {
+        await this.setState({
+            pageNumber: this.state.pageNumber - 1
+        })
+        await this.fetchPokemon()
+    }
+
     render() {
         return (
             <div className="fetch">
@@ -63,6 +85,17 @@ export default class ListPage extends Component {
                     handleSortOrder={this.handleSortOrder} 
                 />
                 
+                <div>Page: {this.state.pageNumber}</div>
+
+                {
+                    this.state.pageNumber !== 1 &&
+                    <button onClick={this.handleDecrement}>Previous</button> 
+                }
+                {
+                    this.state.pageNumber !== Math.ceil(this.state.count / 20) &&
+                    <button onClick={this.handleIncrement}>Next</button> 
+                }
+
                 {
                     this.state.pokemonData.length === 0
                     ? <iframe 
@@ -77,6 +110,7 @@ export default class ListPage extends Component {
                     pokemonDataProp={this.state.pokemonData} 
                     />
                 }
+
                     
             </div>
         )
